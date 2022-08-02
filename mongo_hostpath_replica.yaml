@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mongo
+  labels:
+    app.kubernetes.io/name: mongo
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app.kubernetes.io/name: mongo
+      app.kubernetes.io/component: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mongo
+        app.kubernetes.io/component: backend
+    spec:
+     volumes:
+      - name: mongodb-data
+        hostPath:
+          path: /tmp/mongodb
+     containers:
+      - image: mongo
+        name: mongodb
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        ports:
+        - containerPort: 27017
+          protocol: TCP
