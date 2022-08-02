@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: frontend
   labels:
-    app: guestbook
+    app.kubernetes.io/name: guestbook
+    app.kubernetes.io/component: frontend
 spec:
   selector:
     matchLabels:
-      app: guestbook
+      app.kubernetes.io/name: guestbook
+      app.kubernetes.io/component: frontend
   replicas: 2
   template:
     metadata:
       labels:
-        app: guestbook
+        app.kubernetes.io/name: guestbook
+        app.kubernetes.io/component: frontend
     spec:
       containers:
       - name: guestbook
