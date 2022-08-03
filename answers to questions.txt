@@ -1,0 +1,26 @@
+Q) Was EBS volume created by Amazon EKS at step 4 or step 5 ?  Which AZ was the volume deployed at? Why was it deployed in this AZ? Explain.
+
+Answer)
+EBS volume was created at Step 3. The purpose of using Storage Class is that it supports dynamic provisioning. In other words, a PV is created by a provisioner when a PVC is claimed.  
+PV has been deployed in AZ C in US-East_1.
+When I created cluster from YAML file, the region and availability zones were specified in the YAML.
+Two worker nodes were deployed in those two AZ. And this PV of EBS is attached to one of the instances. The instance that EBS is attached is in AZ C.
+
+Q) Explain why the data is still available and the reason the node that hosts the MongoDB pod remains the same.
+
+Answer) 
+Data was stored persistent volume attached to Mongo DB. As the name implies, persistent storage can keep data because it can be accessed from any cluster nodes.
+As this persistent volume is using EBS which is attached to the particular instance and these are specific to the particular AZ. Pods can’t be connected to a EBS in different availability zones. This is why hosting node remained the same. 
+
+Q) What node is the MongoDB pod running on? 
+Can you still see the data you populated in step 7? 
+Explain what would happen if the MongoDB pod is scheduled to a different node. Would the data from step 8 still be available?
+
+Answer)
+In my demonstration, hosting node keeps changing. ReplicaSet is responsible for redeploying pods and it seems to select nodes in round robin mode.
+And I can see data populated in the proceeding step when the original node is hosting mongoDB pod. But I can’t see them when the other node is hosting the pod.
+Hostpath is specific to a particular node. So if a pod is created in different node, the pod can’t access the data.
+
+
+
+
